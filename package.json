@@ -1,6 +1,6 @@
 {
-  "name": "allenheath-avantis",
-  "version": "1.1.4",
+  "name": "allenheath-avantis_Luke_Hall",
+  "version": "2.0.0",
   "api_version": "1.0.0",
   "keywords": [
     "Software",
@@ -15,7 +15,7 @@
     "postinstall": "husky",
     "format": "prettier -w .",
     "package": "run build && companion-module-build",
-    "build": "rimraf dist && run build:main",
+    "build": "rimraf dist && npm run build:main",
     "build:main": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch",
     "lint:raw": "eslint",

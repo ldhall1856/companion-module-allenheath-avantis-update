@@ -3,7 +3,7 @@
 	"name": "allenheath-avantis",
 	"shortname": "avantis",
 	"description": "Allen & Heath Avantis Mixer",
-	"version": "0.0.0",
+	"version": "1.0.2",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-allenheath-avantis.git",
 	"bugs": "https://github.com/bitfocus/companion-module-allenheath-avantis/issues",

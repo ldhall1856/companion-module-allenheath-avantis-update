@@ -1,5 +1,20 @@
 export default function (self: any) {
-	self.setVariableDefinitions([
-		
-	])
+	const variables: any[] = [
+		{ variableId: 'connection_state', name: 'Connection State' },
+		{ variableId: 'last_scene', name: 'Last Scene' },
+	]
+
+	for (let i = 1; i <= 64; i++) {
+		variables.push({
+			variableId: `input_${i}_name`,
+			name: `Input ${i} Name`,
+		})
+
+		variables.push({
+			variableId: `input_${i}_mute`,
+			name: `Input ${i} Mute`,
+		})
+	}
+
+	self.setVariableDefinitions(variables)
 }

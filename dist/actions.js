@@ -65,6 +65,17 @@ function default_1(self) {
                 { label: `White`, id: 7 },
             ],
         };
+        self.getNamedInputChoices = () => {
+            return self.CHOICES_INPUT_CHANNEL.values.map((choice, index) => {
+                const zeroBasedChannel = parseInt(String(choice.id ?? index));
+                const variableChannel = zeroBasedChannel + 1;
+                const currentName = String(self.getVariableValue(`input_${variableChannel}_name`) ?? '').trim();
+                return {
+                    ...choice,
+                    label: currentName ? `${variableChannel} - ${currentName}` : `${variableChannel}`,
+                };
+            });
+        };
         // -----------------------
         // OPTIONS
         // -----------------------
@@ -77,7 +88,7 @@ function default_1(self) {
                         label: choice.name,
                         id: 'channel',
                         default: 1 + choice.offset,
-                        choices: choice.values,
+                        choices: choice === self.CHOICES_INPUT_CHANNEL ? self.getNamedInputChoices() : choice.values,
                         minChoicesForSearch: 0,
                     },
                     {
@@ -104,7 +115,7 @@ function default_1(self) {
                         label: choice.name,
                         id: 'channel',
                         default: 1 + choice.offset,
-                        choices: choice.values,
+                        choices: choice === self.CHOICES_INPUT_CHANNEL ? self.getNamedInputChoices() : choice.values,
                         minChoicesForSearch: 0,
                     },
                     {
@@ -134,7 +145,7 @@ function default_1(self) {
                         id: 'srcChannel',
                         default: [],
                         multiple: true,
-                        choices: srcChoice.values,
+                        choices: srcChoice === self.CHOICES_INPUT_CHANNEL ? self.getNamedInputChoices() : srcChoice.values,
                         minChoicesForSearch: 0,
                     },
                     {
@@ -171,7 +182,7 @@ function default_1(self) {
                         label: srcChoice.name,
                         id: 'srcChannel',
                         default: 1 + srcChoice.offset,
-                        choices: srcChoice.values,
+                        choices: srcChoice === self.CHOICES_INPUT_CHANNEL ? self.getNamedInputChoices() : srcChoice.values,
                         minChoicesForSearch: 0,
                     },
                     {
@@ -208,7 +219,7 @@ function default_1(self) {
                         label: srcChoice.name,
                         id: 'channel',
                         default: 1 + srcChoice.offset,
-                        choices: srcChoice.values,
+                        choices: srcChoice === self.CHOICES_INPUT_CHANNEL ? self.getNamedInputChoices() : srcChoice.values,
                         minChoicesForSearch: 0,
                     },
                     {
@@ -251,6 +262,32 @@ function default_1(self) {
         actions['mute_group'] = self.muteActionBuilder('Mute Group', self.CHOICES_MUTE_GROUP);
         actions['mute_dca'] = self.muteActionBuilder('Mute DCA', self.CHOICES_DCA);
         actions['fader_input'] = self.faderActionBuilder('Set Input Fader to Level', self.CHOICES_INPUT_CHANNEL);
+        actions['fader_input_variable'] = {
+            name: 'Fader Level (Variable)',
+            options: [
+                {
+                    type: 'dropdown',
+                    label: self.CHOICES_INPUT_CHANNEL.name,
+                    id: 'channel',
+                    default: 1 + self.CHOICES_INPUT_CHANNEL.offset,
+                    choices: self.getNamedInputChoices(),
+                    minChoicesForSearch: 0,
+                },
+                {
+                    type: 'textinput',
+                    label: 'Level',
+                    id: 'level',
+                    default: '100',
+                    useVariables: true,
+                },
+            ],
+            callback: (action, context) => {
+                self.action({
+                    action: action.actionId,
+                    options: action.options,
+                });
+            },
+        };
         actions['fader_mono_group'] = self.faderActionBuilder('Set Mono Group Master Fader to Level', self.CHOICES_MONO_GROUP);
         actions['fader_stereo_group'] = self.faderActionBuilder('Set Stereo Group Master Fader to Level', self.CHOICES_STEREO_GROUP);
         actions['fader_mono_aux'] = self.faderActionBuilder('Set Mono Aux Master Fader to Level', self.CHOICES_MONO_AUX);
@@ -273,7 +310,7 @@ function default_1(self) {
                     label: self.CHOICES_INPUT_CHANNEL.name,
                     id: 'channel',
                     default: 1 + self.CHOICES_INPUT_CHANNEL.offset,
-                    choices: self.CHOICES_INPUT_CHANNEL.values,
+                    choices: self.getNamedInputChoices(),
                     minChoicesForSearch: 0,
                 },
                 {
@@ -281,8 +318,38 @@ function default_1(self) {
                     label: 'Name of the Channel',
                     id: 'channelName',
                     tooltip: 'In this option you can enter whatever you want as long as it is the number one',
+                    useVariables: true,
                 },
             ],
+            callback: (action, context) => {
+                self.action({
+                    action: action.actionId,
+                    options: action.options,
+                });
+            },
+        };
+        actions['get_input_name'] = {
+            name: 'Get Input Name',
+            options: [
+                {
+                    type: 'dropdown',
+                    label: self.CHOICES_INPUT_CHANNEL.name,
+                    id: 'channel',
+                    default: 1 + self.CHOICES_INPUT_CHANNEL.offset,
+                    choices: self.getNamedInputChoices(),
+                    minChoicesForSearch: 0,
+                },
+            ],
+            callback: (action, context) => {
+                self.action({
+                    action: action.actionId,
+                    options: action.options,
+                });
+            },
+        };
+        actions['refresh_all_input_names'] = {
+            name: 'Refresh All Input Names',
+            options: [],
             callback: (action, context) => {
                 self.action({
                     action: action.actionId,
@@ -298,7 +365,7 @@ function default_1(self) {
                     label: self.CHOICES_INPUT_CHANNEL.name,
                     id: 'channel',
                     default: 1 + self.CHOICES_INPUT_CHANNEL.offset,
-                    choices: self.CHOICES_INPUT_CHANNEL.values,
+                    choices: self.getNamedInputChoices(),
                     minChoicesForSearch: 0,
                 },
                 {
@@ -329,6 +396,18 @@ function default_1(self) {
                     minChoicesForSearch: 0,
                 },
             ],
+        };
+        actions['scene_recall_variable'] = {
+            name: 'Scene recall (variable)',
+            options: [
+                {
+                    type: 'textinput',
+                    label: 'Scene Number',
+                    id: 'sceneNumber',
+                    default: '1',
+                    useVariables: true,
+                },
+            ],
             callback: (action, context) => {
                 self.action({
                     action: action.actionId,
@@ -352,7 +431,7 @@ function default_1(self) {
                     label: self.CHOICES_INPUT_CHANNEL.name,
                     id: 'srcChannel',
                     default: 1 + self.CHOICES_INPUT_CHANNEL.offset,
-                    choices: self.CHOICES_INPUT_CHANNEL.values,
+                    choices: self.getNamedInputChoices(),
                     minChoicesForSearch: 0,
                 },
                 {
