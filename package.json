@@ -1,5 +1,5 @@
 {
-  "name": "allenheath-avantis_Luke_Hall",
+  "name": "allenheath-avantis",
   "version": "2.0.0",
   "api_version": "1.0.0",
   "keywords": [
@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitfocus/companion-module-allenheath-avantis.git"
+    "url": "git+https://github.com/ldhall1856/Companion-Allen-Heath-Avantis.git"
   },
   "dependencies": {
     "@companion-module/base": "~1.11.2"

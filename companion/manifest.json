@@ -1,16 +1,16 @@
 {
-	"id": "allenheath-avantis",
+	"id": "allenheath-avantis-update",
 	"name": "allenheath-avantis",
 	"shortname": "avantis",
 	"description": "Allen & Heath Avantis Mixer",
 	"version": "1.0.2",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-allenheath-avantis.git",
-	"bugs": "https://github.com/bitfocus/companion-module-allenheath-avantis/issues",
+	"repository": "git+https://github.com/ldhall1856/Companion-Allen-Heath-Avantis.git",
+	"bugs": "https://github.com/ldhall1856/Companion-Allen-Heath-Avantis/issues",
 	"maintainers": [
 		{
-			"name": "Erlend Jones",
-			"email": "erlend@bitfocus.io"
+			"name": "Luke Hall",
+			"email": "ldhall1856@live.com"
 		}
 	],
 	"runtime": {
